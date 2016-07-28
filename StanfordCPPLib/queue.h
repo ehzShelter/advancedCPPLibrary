@@ -4,7 +4,7 @@
  * This file exports the <code>Queue</code> class, a collection
  * in which values are ordinarily processed in a first-in/first-out
  * (FIFO) order.
- * 
+ *
  * @version 2015/07/05
  * - using global hashing functions rather than global variables
  * @version 2014/11/13
@@ -52,7 +52,7 @@ public:
      * Frees any heap storage associated with this queue.
      */
     virtual ~Queue();
-    
+
     /*
      * Method: add
      * Usage: queue.add(value);
@@ -77,7 +77,7 @@ public:
      * Removes all elements from the queue.
      */
     void clear();
-    
+
     /*
      * Method: dequeue
      * Usage: ValueType first = queue.dequeue();
@@ -93,7 +93,7 @@ public:
      * Adds <code>value</code> to the end of the queue.
      */
     void enqueue(const ValueType& value);
-    
+
     /*
      * Method: equals
      * Usage: if (queue.equals(queue2)) ...
@@ -104,7 +104,7 @@ public:
      * Identical in behavior to the == operator.
      */
     bool equals(const Queue<ValueType>& queue2) const;
-    
+
     /*
      * Method: front
      * Usage: ValueType first = queue.front();
@@ -120,7 +120,7 @@ public:
      * Returns <code>true</code> if the queue contains no elements.
      */
     bool isEmpty() const;
-    
+
     /*
      * Method: peek
      * Usage: ValueType first = queue.peek();
@@ -148,12 +148,12 @@ public:
      * Returns the number of values in the queue.
      */
     int size() const;
-    
+
     /*
      * Returns an STL deque object with the same elements as this Queue.
      */
     std::queue<ValueType> toStlDeque() const;
-    
+
     /*
      * Returns an STL queue object with the same elements as this Queue.
      */
@@ -200,10 +200,10 @@ public:
 
     template <typename T>
     friend int hashCode(const Queue<T>& s);
-    
+
     template <typename T>
     friend std::ostream& operator <<(std::ostream& os, const Queue<T>& queue);
-    
+
     /* Private section */
 
     /**********************************************************************/
@@ -423,7 +423,7 @@ int Queue<ValueType>::queueCompare(const Queue& queue2) const {
     if (*this == queue2) {
         return 0;
     }
-    
+
     for (int i1 = 0, i2 = 0;
          i1 < count && i2 < queue2.count;
          i1++, i2++) {
@@ -433,7 +433,7 @@ int Queue<ValueType>::queueCompare(const Queue& queue2) const {
             return 1;
         }
     }
-    
+
     if (count < queue2.count) {
         return -1;
     } else if (count > queue2.count) {
@@ -445,7 +445,7 @@ int Queue<ValueType>::queueCompare(const Queue& queue2) const {
 
 template <typename ValueType>
 bool Queue<ValueType>::operator ==(const Queue& queue2) const {
-	return equals(queue2);
+    return equals(queue2);
 }
 
 template <typename ValueType>

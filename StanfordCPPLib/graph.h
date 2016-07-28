@@ -4,7 +4,7 @@
  * This file exports a parameterized <code>Graph</code> class used
  * to represent <b><i>graphs,</i></b> which consist of a set of
  * <b><i>nodes</i></b> (vertices) and a set of <b><i>arcs</i></b> (edges).
- * 
+ *
  * @version 2015/07/05
  * - using global hashing functions rather than global variables
  * @version 2014/11/13
@@ -65,14 +65,14 @@ public:
      * Creates an empty <code>Graph</code> object.
      */
     Graph();
-    
+
     /*
      * Destructor: ~Graph
      * ------------------
      * Frees the internal storage allocated to represent the graph.
      */
     virtual ~Graph();
-    
+
     /*
      * Method: addArc
      * Usage: g.addArc(s1, s2);
@@ -115,7 +115,7 @@ public:
      * Reinitializes the graph to be empty, freeing any heap storage.
      */
     void clear();
-    
+
     /*
      * Method: equals
      * Usage: if (graph.equals(graph2)) ...
@@ -126,7 +126,7 @@ public:
      * Identical in behavior to the == operator.
      */
     bool equals(const Graph<NodeType, ArcType>& graph2) const;
-    
+
     /*
      * Method: getArcSet
      * Usage: for (ArcType* arc : g.getArcSet()) ...
@@ -141,7 +141,7 @@ public:
     const Set<ArcType*>& getArcSet() const;
     const Set<ArcType*>& getArcSet(NodeType* node) const;
     const Set<ArcType*>& getArcSet(const std::string& name) const;
-    
+
     /*
      * Method: getNeighbors
      * Usage: for (NodeType *node : g.getNeighbors(node)) ...
@@ -164,7 +164,7 @@ public:
      * name exists, returns <code>NULL</code>.
      */
     NodeType* getNode(const std::string& name) const;
-    
+
     /*
      * Method: getNodeSet
      * Usage: for (NodeType *node : g.getNodeSet()) ...
@@ -194,7 +194,7 @@ public:
      * Returns <code>true</code> if the graph is empty.
      */
     bool isEmpty() const;
-    
+
     /*
      * Method: removeArc
      * Usage: g.removeArc(s1, s2);
@@ -299,7 +299,7 @@ public:
      * Converts the graph to a printable string representation.
      */
     std::string toString() const;
-    
+
     /*
      * Friend method: writeArcData
      * Usage: writeArcData(os, arc);
@@ -381,12 +381,12 @@ public:
         }
 
         friend class Graph;
-        
+
     private:
         const Graph* m_graph;
         typename Set<NodeType*>::iterator m_itr;
     };
-    
+
     graph_iterator begin() const {
         return graph_iterator(*this, /* end */ false);
     }
@@ -394,7 +394,7 @@ public:
     graph_iterator end() const {
         return graph_iterator(*this, /* end */ true);
     }
-    
+
     /*
      * Operators: ==, !=, <, >, <=, >=
      * Usage: if (graph1 == graph2) ...
@@ -414,7 +414,7 @@ public:
     bool operator >(const Graph& graph2) const;
     bool operator >=(const Graph& graph2) const;
 
-    
+
     /* Private section */
 
     /**********************************************************************/
@@ -973,24 +973,24 @@ int Graph<NodeType, ArcType>::graphCompare(const Graph<NodeType, ArcType>& graph
     if (this == &graph2) {
         return 0;
     }
-    
+
     auto itr1 = begin();
     auto itr2 = graph2.begin();
     auto g1end = end();
     auto g2end = graph2.end();
-    
+
     while (itr1 != g1end && itr2 != g2end) {
         // compare each pair of elements from iterators
         NodeType* node1 = *itr1;
         NodeType* node2 = *itr2;
-        
+
         // optimization: if literally same node, equal; don't compare
         if (node1 != node2) {
             // first check names
             if (node1->name != node2->name) {
                 return node1->name.compare(node2->name);
             }
-            
+
             // then check all edges, pairwise
             auto eitr1 = node1->arcs.begin();
             auto eitr2 = node2->arcs.begin();
@@ -999,7 +999,7 @@ int Graph<NodeType, ArcType>::graphCompare(const Graph<NodeType, ArcType>& graph
             while (eitr1 != e1end && eitr2 != e2end) {
                 ArcType* arc1 = *eitr1;
                 ArcType* arc2 = *eitr2;
-                
+
                 // optimization: if literally same edge, equal; don't compare
                 if (arc1 != arc2) {
                     // first check start vertex names, then end vertex names
@@ -1012,7 +1012,7 @@ int Graph<NodeType, ArcType>::graphCompare(const Graph<NodeType, ArcType>& graph
                 eitr1++;
                 eitr2++;
             }
-            
+
             // if we get here, everything from me matched graph2, so either edges equal,
             // or one is shorter than the other (fewer edges) and is therefore less
             if (eitr1 == e1end && eitr2 == e2end) {
@@ -1023,13 +1023,13 @@ int Graph<NodeType, ArcType>::graphCompare(const Graph<NodeType, ArcType>& graph
                 return 1;
             }
         }
-        
+
         // if we get here, those two vertices and their outbound edges
         // were equal; so advance to next element
         itr1++;
         itr2++;
     }
-    
+
     // if we get here, everything from me matched graph2, so either equal,
     // or one is shorter than the other (fewer vertices) and is therefore less
     if (itr1 == g1end && itr2 == g2end) {

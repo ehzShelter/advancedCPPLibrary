@@ -56,7 +56,7 @@ public:
     double cost;        // cost to reach this vertex (initially 0; you can set this)
     double& weight;     // alias of cost; they are the same field
     bool visited;       // whether this vertex has been visited before (initally false; you can set this)
-    Vertex* previous;   // vertex that comes before this one (initially NULL; you can set this)
+    Vertex* parent;   // vertex that comes before this one (initially NULL; you can set this)
 
     /*
      * The following pointer can point to any extra data needed by the vertex.
@@ -83,10 +83,10 @@ public:
      * Returns the color of this vertex, if any.  Initially WHITE.
      */
     /* Color */ int getColor() const;
-
+                int getLevel() const;
     /*
      * Wipes the supplementary data of this vertex back to its initial state.
-     * Specifically, sets cost to 0, visited to false, and previous to NULL.
+     * Specifically, sets cost to 0, visited to false, and parent to NULL.
      */
     void resetData();
 
@@ -96,10 +96,10 @@ public:
      * Future calls to getColor will return the color you pass here.
      */
     void setColor(/* Color */ int c);
-
+    void setLevel(int l);
     /*
      * Returns a string representation of this vertex for debugging, such as
-     * "Vertex{name=r13c42, cost=11, visited=true, previous=r12c41, neighbors={r12c41, r12c43}}".
+     * "Vertex{name=r13c42, cost=11, visited=true, parent=r12c41, neighbors={r12c41, r12c43}}".
      */
     std::string toString() const;
 
@@ -115,6 +115,7 @@ public:
 
 private:
     /* Color */ int m_color;   // vertex's color as passed to setColor
+    int m_level;
 };
 
 /*
@@ -171,7 +172,7 @@ public:
      * "Arc{start=r12c42, finish=r12c41, cost=0.75}".
      */
     std::string toString() const;
-    
+
     /*
      * Copy assignment operator (rule of three).
      */
