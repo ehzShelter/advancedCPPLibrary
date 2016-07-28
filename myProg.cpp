@@ -9,10 +9,16 @@ enum {
     INFINITY = std::numeric_limits<int>::max()
 };
 
-enum colorDISCOVER {
+enum colorValue {
     WHITE,
     GRAY,
     BLACK
+};
+
+enum DISCOVER {
+    UNDISCOVERED,
+    DISCOVERED,
+    FINISHED
 };
 
 void levelPrint(Vertex* v)
