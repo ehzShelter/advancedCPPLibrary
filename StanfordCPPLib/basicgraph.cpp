@@ -414,3 +414,4 @@ void BasicGraph::writeArcData(std::ostream& out, Edge* edge) const {
         out << edge->cost;
     }
 }
+

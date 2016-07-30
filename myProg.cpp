@@ -4,6 +4,7 @@
 #include <iostream>
 #include <limits>
 #include <queue>
+#include <string>
 
 enum {
     INFINITY = std::numeric_limits<int>::max()
@@ -60,7 +61,7 @@ void BFS(BasicGraph& G, Vertex* s)
     }
 }
 
-int main(void)
+void testingBFS(void)
 {
     BasicGraph G;
     Vertex* V1 = G.addVertex("L");
@@ -80,13 +81,159 @@ int main(void)
     std::string str = G.toString();
 
     std::cout << str;
-    // G.getEdgeSet();
+    G.getEdgeSet();
     std::cout << std::endl;
     std::cout << "BFS " << std::endl;
 
     BFS(G, V1);
     std::cout << std::endl;
     levelPrint(V5);
+    std::cout << std::endl;
+}
+
+void DFSVisit(BasicGraph& G, Vertex* u)
+{
+    std::cout << u->name << " ";
+    // white vertex u just have been discovered
+    G.timestamp = G.timestamp + 1;
+
+    u->discoveredTimestamp = G.timestamp;
+    u->setColor(GRAY);
+
+    // explore edge(u, v)
+    for (Vertex* v : G.getNeighbors(u)) {
+        if (v->getColor() == WHITE) {
+            v->parent = u;
+            DFSVisit(G, v);
+        }
+    }
+    // blacken u, it is FINISHED
+    u->setColor(BLACK);
+    G.timestamp = G.timestamp + 1;
+    u->finishedTimestamp = G.timestamp;
+}
+
+void DFSVisitEdgeClassify(BasicGraph& G, Vertex* u)
+{
+    // remember G must be a directed Graph
+    // white vertex u just have been discovered
+    G.timestamp = G.timestamp + 1;
+
+    u->discoveredTimestamp = G.timestamp;
+    u->setColor(GRAY);
+
+    // explore edge(u, v)
+    for (Vertex* v : G.getNeighbors(u)) {
+        if (v->getColor() == BLACK) {
+
+            if (u->discoveredTimestamp < v->discoveredTimestamp) {
+                std::cout << "forwadEdge : ";
+                std::cout << u->name << " " << v->name;
+                std::cout << std::endl;
+            } else {
+
+                std::cout << "crossEdge : ";
+                std::cout << u->name << " " << v->name;
+                std::cout << std::endl;
+            }
+        }
+
+        else if (v->getColor() == GRAY) {
+
+            std::cout << "backEdge : ";
+            std::cout << u->name << " " << v->name;
+            std::cout << std::endl;
+        }
+
+        else {
+            v->parent = u;
+            std::cout << "treeEdge : ";
+            std::cout << u->name << " " << v->name;
+            std::cout << std::endl;
+            DFSVisitEdgeClassify(G, v);
+        }
+    }
+
+    // blacken u, it is FINISHED
+    u->setColor(BLACK);
+    G.timestamp = G.timestamp + 1;
+    u->finishedTimestamp = G.timestamp;
+}
+
+void DFS(BasicGraph& G)
+{
+    // iterate through the whole graph for each and every vertices
+    for (Vertex* u : G.getVertexSet()) {
+        u->setColor(WHITE);
+        u->parent = nullptr;
+    }
+
+    G.timestamp = 0;
+
+    for (Vertex* u : G.getVertexSet()) {
+        if (u->getColor() == WHITE) {
+            DFSVisit(G, u);
+        }
+    }
+}
+
+void dfsTraverseForClassify(BasicGraph& G)
+{
+    // iterate through the whole graph for each and every vertices
+    for (Vertex* u : G.getVertexSet()) {
+        u->setColor(WHITE);
+        u->parent = nullptr;
+    }
+
+    G.timestamp = 0;
+
+    for (Vertex* u : G.getVertexSet()) {
+        if (u->getColor() == WHITE) {
+            // Edge Classification
+            DFSVisitEdgeClassify(G, u);
+        }
+    }
+}
+
+void testingDFS(BasicGraph& G)
+{
+    G.addVertex("u");
+    G.addVertex("v");
+    G.addVertex("w");
+    G.addVertex("x");
+    G.addVertex("y");
+    G.addVertex("z");
+
+    G.addEdge("u", "v");
+    G.addEdge("u", "x");
+    G.addEdge("x", "v");
+    G.addEdge("v", "y");
+    G.addEdge("y", "x");
+    G.addEdge("w", "y");
+    G.addEdge("w", "z");
+    G.addEdge("z", "z");
+
+    std::string str = G.toString();
+
+    std::cout << str;
+    std::cout << std::endl;
+
+    std::cout << "DFS ";
+
+    DFS(G);
+    std::cout << std::endl;
+    std::cout << "DFS traversal for edge Classification: " << std::endl;
+    dfsTraverseForClassify(G);
+
+    std::cout << std::endl;
+}
+
+int main(void)
+{
+    // DFS
+    BasicGraph G;
+    testingDFS(G);
+
     std::cout << std::endl;
     return 0;
 }

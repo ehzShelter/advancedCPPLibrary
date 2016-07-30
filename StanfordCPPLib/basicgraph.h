@@ -25,11 +25,11 @@
 #ifndef _basicgraph_h
 #define _basicgraph_h
 
-#include <string>
 #include "graph.h"
 #include "grid.h"
 #include "observable.h"
 #include "set.h"
+#include <string>
 
 /*
  * Forward declarations of Vertex/Edge structures so that they can refer
@@ -44,19 +44,22 @@ struct Edge;
  */
 struct Vertex : public Observable {
 public:
-    std::string name;    // required by Stanford Graph; vertex's name
-    Set<Edge*> arcs;     // edges outbound from this vertex; to neighbors
-    Set<Edge*>& edges;   // alias of arcs; preferred name
+    std::string name; // required by Stanford Graph; vertex's name
+    Set<Edge*> arcs; // edges outbound from this vertex; to neighbors
+    Set<Edge*>& edges; // alias of arcs; preferred name
 
     /*
      * The following three fields are 'supplementary data' inside each vertex.
      * You can use them in your path-searching algorithms to store various
      * information related to the vertex
      */
-    double cost;        // cost to reach this vertex (initially 0; you can set this)
-    double& weight;     // alias of cost; they are the same field
-    bool visited;       // whether this vertex has been visited before (initally false; you can set this)
-    Vertex* parent;   // vertex that comes before this one (initially NULL; you can set this)
+    double cost; // cost to reach this vertex (initially 0; you can set this)
+    double& weight; // alias of cost; they are the same field
+    bool visited; // whether this vertex has been visited before (initally false; you can set this)
+    Vertex* parent; // vertex that comes before this one (initially NULL; you can set this)
+
+    int discoveredTimestamp;
+    int finishedTimestamp;
 
     /*
      * The following pointer can point to any extra data needed by the vertex.
@@ -82,8 +85,9 @@ public:
     /*
      * Returns the color of this vertex, if any.  Initially WHITE.
      */
-    /* Color */ int getColor() const;
-                int getLevel() const;
+    /* Color */
+    int getColor() const;
+    int getLevel() const;
     /*
      * Wipes the supplementary data of this vertex back to its initial state.
      * Specifically, sets cost to 0, visited to false, and parent to NULL.
@@ -106,15 +110,15 @@ public:
     /*
      * Copy assignment operator (rule of three).
      */
-    Vertex& operator =(const Vertex& other);
+    Vertex& operator=(const Vertex& other);
 
     /*
      * Move assignment operator (rule of three).
      */
-    Vertex& operator =(Vertex&& other);
+    Vertex& operator=(Vertex&& other);
 
 private:
-    /* Color */ int m_color;   // vertex's color as passed to setColor
+    /* Color */ int m_color; // vertex's color as passed to setColor
     int m_level;
 };
 
@@ -137,12 +141,12 @@ std::ostream& operator<<(std::ostream& out, const Vertex& v);
  */
 struct Edge {
 public:
-    Vertex* start;    // edge's starting vertex (required by Graph)
-    Vertex* finish;   // edge's ending vertex (required by Graph)
-    Vertex*& end;     // alias of finish; they are the same field
-    double cost;      // edge weight (required by Graph)
-    double& weight;   // alias of cost; they are the same field
-    bool visited;     // whether this edge has been visited before (initally false; you can set this)
+    Vertex* start; // edge's starting vertex (required by Graph)
+    Vertex* finish; // edge's ending vertex (required by Graph)
+    Vertex*& end; // alias of finish; they are the same field
+    double cost; // edge weight (required by Graph)
+    double& weight; // alias of cost; they are the same field
+    bool visited; // whether this edge has been visited before (initally false; you can set this)
 
     /*
      * The following pointer can point to any extra data needed by the vertex.
@@ -176,12 +180,12 @@ public:
     /*
      * Copy assignment operator (rule of three).
      */
-    Edge& operator =(const Edge& other);
+    Edge& operator=(const Edge& other);
 
     /*
      * Move assignment operator (rule of three).
      */
-    Edge& operator =(Edge&& other);
+    Edge& operator=(Edge&& other);
 };
 
 /*
@@ -196,7 +200,6 @@ std::ostream& operator<<(std::ostream& out, const Edge& edge);
  * You can refer to an Edge as an Arc if you prefer.
  */
 #define Arc Edge
-
 
 /*
  * BasicGraph is just basically an instantiation of Graph using Vertex and Edge
@@ -264,6 +267,8 @@ public:
     void removeVertex(const std::string& name);
     void removeVertex(Vertex* v);
 
+    // properties
+    int timestamp;
 private:
     bool m_resetEnabled;
 };
