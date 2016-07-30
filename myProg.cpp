@@ -238,12 +238,83 @@ void testingDFS(BasicGraph& G)
     std::cout << std::endl;
 }
 
+void DAGOrder(BasicGraph& G, Vertex* u)
+{
+    // white vertex u just have been discovered
+    G.timestamp = G.timestamp + 1;
+
+    u->discoveredTimestamp = G.timestamp;
+    u->setColor(GRAY);
+
+    // explore edge(u, v)
+    for (Vertex* v : G.getNeighbors(u)) {
+        if (v->getColor() == WHITE) {
+            v->parent = u;
+            DAGOrder(G, v);
+        }
+    }
+    // blacken u, it is FINISHED
+    u->setColor(BLACK);
+    G.timestamp = G.timestamp + 1;
+    u->finishedTimestamp = G.timestamp;
+
+    std::cout << u->name << " ";
+
+}
+
+void DAG(BasicGraph& G)
+{
+    // iterate through the whole graph for each and every vertices
+    for (Vertex* u : G.getVertexSet()) {
+        u->setColor(WHITE);
+        u->parent = nullptr;
+    }
+
+    G.timestamp = 0;
+
+    for (Vertex* u : G.getVertexSet()) {
+        if (u->getColor() == WHITE) {
+            DAGOrder(G, u);
+        }
+    }
+}
+
+void testingTopoSort(BasicGraph& G)
+{
+    G.addVertex("0");
+    G.addVertex("1");
+    G.addVertex("2");
+    G.addVertex("3");
+    G.addVertex("4");
+    G.addVertex("5");
+    G.addVertex("6");
+    G.addVertex("7");
+
+    G.addEdge("0", "2");
+    G.addEdge("1", "3");
+    G.addEdge("1", "5");
+    G.addEdge("1", "2");
+    G.addEdge("3", "5");
+    G.addEdge("2", "5");
+    G.addEdge("2", "4");
+    G.addEdge("6", "7");
+
+    std::string str = G.toString();
+
+    std::cout << str;
+    std::cout << std::endl;
+
+    DAG(G);
+
+    std::cout << std::endl;
+}
+
 int main(void)
 {
-    // DFS
     BasicGraph G;
-    testingDFS(G);
-
+    // testingBFS(G);
+    // testingDFS(G);
+    testingTopoSort(G);
     std::cout << std::endl;
     return 0;
 }
