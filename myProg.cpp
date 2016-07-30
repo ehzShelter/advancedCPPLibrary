@@ -203,15 +203,25 @@ void testingDFS(BasicGraph& G)
     G.addVertex("x");
     G.addVertex("y");
     G.addVertex("z");
+    G.addVertex("q");
+    G.addVertex("r");
+    G.addVertex("s");
+    G.addVertex("t");
 
-    G.addEdge("u", "v");
-    G.addEdge("u", "x");
-    G.addEdge("x", "v");
-    G.addEdge("v", "y");
-    G.addEdge("y", "x");
-    G.addEdge("w", "y");
-    G.addEdge("w", "z");
-    G.addEdge("z", "z");
+    G.addEdge("s", "v");
+    G.addEdge("v", "w");
+    G.addEdge("w", "s");
+    G.addEdge("q", "s");
+    G.addEdge("q", "w");
+    G.addEdge("q", "t");
+    G.addEdge("t", "x");
+    G.addEdge("x", "z");
+    G.addEdge("z", "x");
+    G.addEdge("t", "y");
+    G.addEdge("y", "q");
+    G.addEdge("r", "u");
+    G.addEdge("u", "y");
+    G.addEdge("r", "y");
 
     std::string str = G.toString();
 
