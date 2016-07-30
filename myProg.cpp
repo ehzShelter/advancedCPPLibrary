@@ -127,7 +127,7 @@ void DFSVisitEdgeClassify(BasicGraph& G, Vertex* u)
         if (v->getColor() == BLACK) {
 
             if (u->discoveredTimestamp < v->discoveredTimestamp) {
-                std::cout << "forwadEdge : ";
+                std::cout << "forwardEdge : ";
                 std::cout << u->name << " " << v->name;
                 std::cout << std::endl;
             } else {
