@@ -22,6 +22,33 @@ enum DISCOVER {
     FINISHED
 };
 
+// all prototypes
+void testingBFS(void);
+void BFS(BasicGraph& G, Vertex* s);
+void testingTopoSort(BasicGraph& G);
+void levelPrint(Vertex* v);
+void DFSVisit(BasicGraph& G, Vertex* u);
+void DFSVisitEdgeClassify(BasicGraph& G, Vertex* u);
+void DFS(BasicGraph& G);
+void dfsTraverseForClassify(BasicGraph& G);
+void DAGOrder(BasicGraph& G, Vertex* u);
+void testingDFS(BasicGraph& G);
+void DAG(BasicGraph& G);
+void printPath(BasicGraph& G, Vertex* from, Vertex* target);
+
+void printPath(BasicGraph& G, Vertex* from, Vertex* target)
+{
+    if (from == target) {
+        std::cout << from->name << " ";
+    } else if (target->parent == nullptr) {
+        std::cout << "There is no path from "
+                  << from << " to " << target << " ! " << std::endl;
+    } else {
+        printPath(G, from, target->parent);
+        std::cout << target->name << " ";
+    }
+}
+
 void levelPrint(Vertex* v)
 {
     std::cout << v->name << " " << v->getLevel();
@@ -61,9 +88,8 @@ void BFS(BasicGraph& G, Vertex* s)
     }
 }
 
-void testingBFS(void)
+void testingBFS(BasicGraph& G)
 {
-    BasicGraph G;
     Vertex* V1 = G.addVertex("L");
     Vertex* V2 = G.addVertex("M");
     Vertex* V3 = G.addVertex("V");
@@ -87,7 +113,9 @@ void testingBFS(void)
 
     BFS(G, V1);
     std::cout << std::endl;
-    levelPrint(V5);
+
+    printPath(G, V1, V4);
+    // levelPrint(V5);
     std::cout << std::endl;
 }
 
@@ -259,7 +287,6 @@ void DAGOrder(BasicGraph& G, Vertex* u)
     u->finishedTimestamp = G.timestamp;
 
     std::cout << u->name << " ";
-
 }
 
 void DAG(BasicGraph& G)
@@ -312,9 +339,9 @@ void testingTopoSort(BasicGraph& G)
 int main(void)
 {
     BasicGraph G;
-    // testingBFS(G);
+    testingBFS(G);
     // testingDFS(G);
-    testingTopoSort(G);
+    // testingTopoSort(G);
     std::cout << std::endl;
     return 0;
 }
